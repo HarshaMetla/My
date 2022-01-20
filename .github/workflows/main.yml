@@ -1,7 +1,10 @@
-name: Dependency Check1
+name: Security Scan
 
-
-on: [push]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   depchecktest:
@@ -32,6 +35,7 @@ jobs:
         with:
            name: Depcheck report
            path: ${{github.workspace}}/reports
+           
   job_1:
    needs: depchecktest
    name: Sonar Cloud
@@ -58,6 +62,50 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
+          
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=HarshaMetla_My
+          run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=HarshaMetla_My
+
+  job_2:
+    name: building nmap image and pushing into repository
+    needs: job_1
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image of namp
+      run: docker build -t nmapimage .
+    - name: uploading12345
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: harshametla/docker_image
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+  job_3:
+    name:  building sqlmap image and pushing into repository
+    needs: job_2
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image of sqlmap
+      run: docker build -f Dockerfile_sqlmap .
+    - name: uploading
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: harshametla/new
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+
+
+
+
+
+
+
+
+
+
+
