@@ -96,6 +96,6 @@ jobs:
     needs: job_1
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: jtalk/k8s-deploy@v2
     - name: uploading 
       run: kubectl create -f kubernets/my.yml
