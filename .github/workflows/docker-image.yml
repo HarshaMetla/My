@@ -91,6 +91,5 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - uses: jtalk/k8s-deploy@v2
     - name: uploading 
       run: kubectl create -f kubernets/my.yml
