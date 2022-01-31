@@ -91,5 +91,19 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: uploading 
-      run: kubectl create -f kubernets/my.yml
+  job_4:
+    name: Uploading
+    needs: job_1
+    runs-on: ubuntu-latest
+    steps:
+    - uses: jtalk/k8s-deploy@v2
+      with:
+        namespace: 'myapp'
+        manifests: |
+            deployment.yaml
+            service.yaml
+        images: 'jtalk/myapp:${{ event.run_id }}'
+        imagepullsecrets: |
+          image-pull-secret1
+          image-pull-secret2
+        kubectl-version: 'latest'
