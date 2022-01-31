@@ -102,7 +102,7 @@ jobs:
         manifests: |
             deployment.yaml
             service.yaml
-        images: 'jtalk/myapp:${{ event.run_id }}'
+        images: 'harshametla/new'
         imagepullsecrets: |
           image-pull-secret1
           image-pull-secret2
