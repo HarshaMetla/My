@@ -109,7 +109,7 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: Hello1
         environment_name: Hello1-env-1
-        version_label: 123489
+        version_label: 123481
         region: "ap-south-1"
         deployment_package: deploy.zip
 
